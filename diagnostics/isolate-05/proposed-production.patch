@@ -1,0 +1,12 @@
+diff --git a/src/CleanSpace.App/MainWindow.xaml b/src/CleanSpace.App/MainWindow.xaml
+--- a/src/CleanSpace.App/MainWindow.xaml
++++ b/src/CleanSpace.App/MainWindow.xaml
+@@ -11,7 +11,7 @@
+             <NavigationView.MenuItems>
+                 <NavigationViewItem Content="Dashboard" Tag="Dashboard" Icon="Home" IsSelected="True" />
+                 <NavigationViewItem Content="Scan Results" Tag="ScanResults" Icon="Find" />
+-                <NavigationViewItem Content="Cleanup (unavailable)" IsEnabled="False" Icon="Lock"
++                <NavigationViewItem Content="Cleanup (unavailable)" IsEnabled="False" Icon="ProtectedDocument"
+                                     ToolTipService.ToolTip="Cleanup is unavailable in this read-only release." />
+             </NavigationView.MenuItems>
+             <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">

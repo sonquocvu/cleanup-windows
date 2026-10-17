@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <InternalsVisibleTo Include="CleanSpace.IntegrationTests" />
+    <ProjectReference Include="../CleanSpace.Application/CleanSpace.Application.csproj" />
+    <ProjectReference Include="../CleanSpace.Core/CleanSpace.Core.csproj" />
+  </ItemGroup>
+</Project>

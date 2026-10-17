@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../CleanSpace.Core/CleanSpace.Core.csproj" />
+  </ItemGroup>
+</Project>

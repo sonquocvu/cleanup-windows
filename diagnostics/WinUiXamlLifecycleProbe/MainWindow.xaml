@@ -1,0 +1,12 @@
+<Window
+    x:Class="WinUiXamlLifecycleProbe.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="WinUI XAML lifecycle probe">
+    <NavigationView x:Name="Navigation" Loaded="OnNavigationLoaded" IsBackButtonVisible="Collapsed">
+        <NavigationView.MenuItems>
+            <NavigationViewItem Content="Diagnostic control" Icon="Home" />
+        </NavigationView.MenuItems>
+        <TextBlock Text="Compiled XAML lifecycle control" Margin="24" />
+    </NavigationView>
+</Window>

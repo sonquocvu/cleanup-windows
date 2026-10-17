@@ -2,7 +2,36 @@
 
 CleanSpace is a safety-first Windows desktop app for disk space analysis and carefully gated cleanup.
 
-**Status:** Planning documents only. No app has been built or tested by these files.
+**Status:** TASK-001 remains conditionally passed and not fully accepted. The Windows solution builds with zero warnings/errors and all 39 tests pass, including 19 JSON adapter integration cases. Repeated actual-executable launches still crash while initializing WinUI control resources. See [TASK-001 runtime evidence and changed files](docs/TASK-001-REPORT.md).
+
+## Build and test on Windows
+
+The verified environment is Windows x64 build 10.0.26300, .NET SDK 10.0.302, MSBuild 18.6.11, and .NET runtime 10.0.10. `global.json` selects the .NET 10.0.302 SDK feature band and allows stable patch updates. Visual Studio, an installed WinUI template, and a machine-wide Windows SDK were not found at the inspected locations. Package restore provided Windows App SDK 2.5.1 and Windows SDK build tools 10.0.26100.4654; the CLI compiled the WinUI application successfully.
+
+Run these commands in PowerShell from the repository root:
+
+```powershell
+$env:DOTNET_CLI_TELEMETRY_OPTOUT = 'true'
+$env:DOTNET_CLI_WORKLOAD_UPDATE_NOTIFY_DISABLE = 'true'
+dotnet restore CleanSpace.slnx --disable-parallel --verbosity minimal -m:1
+dotnet build CleanSpace.slnx --no-restore --verbosity minimal -m:1 -p:UseSharedCompilation=false
+dotnet test CleanSpace.slnx --no-build --no-restore --verbosity normal -m:1
+git diff --check
+```
+
+Use a normal, non-administrator Windows terminal. The Codex process/network sandbox prevented NuGet feed access and test-host communication; the authorized restore and tests succeeded outside that sandbox. This does not require an elevated application or UAC. A forced restore with fresh HTTP data, `NuGetAudit=true`, and `NuGetAuditMode=all` cleared the previous NU1900 connectivity warnings. The current direct/transitive vulnerability query reported no vulnerable packages; audit checks were not disabled.
+
+The development application is unpackaged and carries the Windows App SDK runtime beside its executable. It still uses the installed .NET 10 runtime. No runtime installer, MSIX installation, signing, publication, or Windows configuration change is part of TASK-001. The launch command is:
+
+```powershell
+& './src/CleanSpace.App/bin/Debug/net10.0-windows10.0.19041.0/win-x64/CleanSpace.App.exe'
+```
+
+Current launch fails before displaying a window; do not interpret a successful build as proof that the window opens. A [minimal diagnostic probe](diagnostics/WinUiStartupProbe/README.md) opens without control resources and reproduces the native crash when `XamlControlsResources` is added. No runtime/deployment workaround or SDK upgrade has been applied without supporting evidence. When startup is resolved, check Dashboard and Scan Results navigation, disabled Cleanup and Quick Scan controls, and Settings. Choose System, Light, or Dark and press **Apply theme**, close the application, and reopen it to check persistence. Check keyboard navigation and a narrow window separately. These GUI checks remain NOT VERIFIED.
+
+The only intended application data write is its own appearance preference at `%LOCALAPPDATA%/CleanSpace/settings.json`. First launch defaults to System. Missing settings are normal; malformed or unreadable settings fall back to System with a path-free notice. A failed save keeps the previously active theme. No disk enumeration, drive metrics, scan service, cleanup interface, or cleanup adapter has been implemented.
+
+Integration fixtures are uniquely named beneath `tests/CleanSpace.IntegrationTests/bin/Debug/net10.0/fixtures/theme-settings/`. They never use real user settings or Temp, make no permission changes, and are retained without deletion. The adapter's internal directory-injection constructor exists only for isolated testing; normal application DI continues to use the same public, fixed-location constructor.
 
 ## Working agreement
 

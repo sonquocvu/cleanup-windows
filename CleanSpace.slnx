@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/CleanSpace.App/CleanSpace.App.csproj" />
+    <Project Path="src/CleanSpace.Application/CleanSpace.Application.csproj" />
+    <Project Path="src/CleanSpace.Core/CleanSpace.Core.csproj" />
+    <Project Path="src/CleanSpace.Infrastructure/CleanSpace.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CleanSpace.Application.Tests/CleanSpace.Application.Tests.csproj" />
+    <Project Path="tests/CleanSpace.Core.Tests/CleanSpace.Core.Tests.csproj" />
+    <Project Path="tests/CleanSpace.IntegrationTests/CleanSpace.IntegrationTests.csproj" />
+  </Folder>
+</Solution>
