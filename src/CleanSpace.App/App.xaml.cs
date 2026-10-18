@@ -3,6 +3,7 @@ using CleanSpace.Application.Abstractions;
 using CleanSpace.Application.UseCases;
 using CleanSpace.Infrastructure.Settings;
 using CleanSpace.Infrastructure.Windows;
+using CleanSpace.Infrastructure.Scanning;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml;
@@ -25,6 +26,10 @@ public partial class App : Microsoft.UI.Xaml.Application
         registrations.AddSingleton<IDriveInfoProvider, WindowsDriveInfoProvider>();
         registrations.AddSingleton<DriveOverviewUseCase>();
         registrations.AddSingleton<DashboardViewModel>();
+        registrations.AddSingleton<IScanScopeProvider, WindowsTempScopeProvider>();
+        registrations.AddSingleton<QuickScanUseCase>();
+        registrations.AddSingleton(provider => new ScanResultsViewModel(
+            provider.GetRequiredService<QuickScanUseCase>(), scanAvailable: false));
         registrations.AddSingleton<SettingsViewModel>();
         registrations.AddSingleton<MainViewModel>();
         registrations.AddSingleton<MainWindow>();

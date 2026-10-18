@@ -11,6 +11,9 @@
     <ProjectReference Include="../../src/CleanSpace.Application/CleanSpace.Application.csproj" />
     <!-- Compile the actual UI-independent presentation sources without loading WinUI in unit tests. -->
     <Compile Include="../../src/CleanSpace.App/ViewModels/DashboardViewModel.cs" Link="Presentation/DashboardViewModel.cs" />
+    <Compile Include="../../src/CleanSpace.App/ViewModels/ScanResultsViewModel.cs" Link="Presentation/ScanResultsViewModel.cs" />
+    <Compile Include="../../src/CleanSpace.App/ViewModels/MainViewModel.cs" Link="Presentation/MainViewModel.cs" />
+    <Compile Include="../../src/CleanSpace.App/ViewModels/SettingsViewModel.cs" Link="Presentation/SettingsViewModel.cs" />
     <Compile Include="../../src/CleanSpace.App/Formatting/DriveValueFormatter.cs" Link="Presentation/DriveValueFormatter.cs" />
   </ItemGroup>
 </Project>

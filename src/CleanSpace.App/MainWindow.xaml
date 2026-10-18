@@ -9,8 +9,8 @@
                         IsBackButtonVisible="Collapsed" IsSettingsVisible="True"
                         PaneTitle="CleanSpace" SelectionChanged="OnNavigationSelectionChanged">
             <NavigationView.MenuItems>
-                <NavigationViewItem Content="Dashboard" Tag="Dashboard" Icon="Home" IsSelected="True" />
-                <NavigationViewItem Content="Scan Results" Tag="ScanResults" Icon="Find" />
+                <NavigationViewItem Content="Dashboard" Tag="Dashboard" Icon="Home" IsSelected="{x:Bind ViewModel.IsDashboard, Mode=OneWay}" />
+                <NavigationViewItem Content="Scan Results" Tag="ScanResults" Icon="Find" IsSelected="{x:Bind ViewModel.IsScanResults, Mode=OneWay}" />
                 <NavigationViewItem Content="Cleanup (unavailable)" IsEnabled="False" Icon="ProtectedDocument"
                                     ToolTipService.ToolTip="Cleanup is unavailable in this read-only release." />
             </NavigationView.MenuItems>
@@ -22,21 +22,12 @@
                         <TextBlock Text="{x:Bind ViewModel.PageDescription, Mode=OneWay}" TextWrapping="Wrap" />
                     </StackPanel>
                     <InfoBar IsOpen="True" IsClosable="False" Severity="Informational"
-                             Title="Read-only overview"
-                             Message="Scanning and cleanup are unavailable. CleanSpace has not analyzed or changed your files." />
-                    <views:DashboardView ViewModel="{x:Bind ViewModel.Dashboard}"
+                             Title="Read-only analyzer"
+                             Message="Quick Scan is temporarily unavailable. Drive information is available. Cleanup remains unavailable." />
+                    <views:DashboardView ViewModel="{x:Bind ViewModel.Dashboard}" QuickScanCommand="{x:Bind ViewModel.QuickScanCommand}"
                                          Visibility="{x:Bind ViewModel.IsDashboard, Mode=OneWay}" />
-                    <Border Visibility="{x:Bind ViewModel.IsPlaceholder, Mode=OneWay}"
-                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1"
-                            CornerRadius="8" Padding="24">
-                        <StackPanel Spacing="16">
-                            <TextBlock Text="No scan results yet" TextWrapping="Wrap"
-                                       Style="{ThemeResource SubtitleTextBlockStyle}" />
-                            <TextBlock Text="No junk-file analysis has been performed. Scanning is unavailable in this release."
-                                       TextWrapping="Wrap" />
-                        </StackPanel>
-                    </Border>
+                    <views:ScanResultsView ViewModel="{x:Bind ViewModel.Scan}"
+                                           Visibility="{x:Bind ViewModel.IsScanResults, Mode=OneWay}" />
                     <views:SettingsView ViewModel="{x:Bind ViewModel.Settings}"
                                         Visibility="{x:Bind ViewModel.IsSettings, Mode=OneWay}" />
                 </StackPanel>

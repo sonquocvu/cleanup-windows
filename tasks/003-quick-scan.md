@@ -1,5 +1,7 @@
 # TASK-003 — Quick Scan (strictly read-only)
 
+**Current status: Scanner implemented but user-facing scan BLOCKED; mitigation accepted.** Keep Dashboard Quick Scan and Scan Results Start disabled. Preserve scanner code/tests. No redesign, new native prototype or re-enablement is authorized by this specification. [ADR-003](../docs/ADR-003-QUICK-SCAN-SAFETY.md) records the accepted decision and evidence gates; a separately approved safe design is required. The original scope below is retained as planning context, not current feature availability or authorization for classification/TASK-004 work.
+
 ## Objective
 List conservative temporary-file candidates from a single current-user, validated Temp scope. No cleanup or file content reads.
 

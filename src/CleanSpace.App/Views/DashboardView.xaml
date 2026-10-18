@@ -68,6 +68,7 @@
         </Border>
         <TextBlock Text="No junk-file analysis has been performed yet. This overview reads volume metadata only; it does not inspect your files."
                    TextWrapping="Wrap" />
-        <Button Content="Quick Scan (unavailable)" IsEnabled="False" />
+        <Button Content="Quick Scan" Command="{x:Bind QuickScanCommand, Mode=OneWay}"
+                AutomationProperties.Name="Quick Scan" />
     </StackPanel>
 </UserControl>

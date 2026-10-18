@@ -3,6 +3,20 @@
 ## Task workflow
 Each task is bounded, reviewed and approved individually. Codex reports: changed files, exact build/test commands and observed results, UI state if tested, safety impact, unresolved blockers. Do not start next task without approval.
 
+## Current acceptance and authorization
+
+The accepted [ADR-003 Quick Scan safety decision](ADR-003-QUICK-SCAN-SAFETY.md) governs current feature availability. Descriptions and exit criteria below are planned requirements, not standing authorization or evidence of completion.
+
+| Task | Current status |
+| --- | --- |
+| TASK-001 — Foundation | **ACCEPTED** |
+| TASK-002 — Drive Overview | **ACCEPTED** |
+| TASK-003 — Quick Scan | **Scanner implemented but user-facing scan BLOCKED; mitigation accepted** |
+| TASK-004 — Safety Policy | **NOT AUTHORIZED** |
+| TASK-005 — Recycle Safety Research | **NOT AUTHORIZED** |
+
+TASK-003-SAFETY-01 and TASK-003-REWORK-02 are accepted investigations; the latter's production UI disablement is approved. None of the three evaluated scanning strategies is approved for user-facing operation. Preserve scanner code/tests and disabled entry points. A separate approved safe design, the ADR's evidence gates and production WinUI acceptance are required before re-enablement. Relaxing trusted scope requires explicit product/security approval before implementation. No new prototype, TASK-004 or TASK-005 work is authorized by this decision.
+
 ## v0.1 — Read-only Analyzer
 
 ### Task 001 — Foundation
@@ -43,6 +57,9 @@ Treemap/deep scan, duplicate file detection, browser cache cleanup, Windows Upda
 - Empirical budgets for wall time/RAM/I/O are set **after** measurements on real devices; do not claim unsupported benchmarks.
 
 ## Definition of Done — v0.1
+
+This target is **not satisfied** while user-facing TASK-003 scanning is blocked. Accepted Foundation and Drive Overview work does not imply acceptance of Quick Scan or later tasks.
+
 - App launches as normal user, supports light/dark/system.
 - Displays actual Windows volume usage (not assumed drive letter).
 - Can scan limited user Temp in read-only manner, display rationale and skip counts, and cancel.

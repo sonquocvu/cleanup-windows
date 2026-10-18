@@ -1,5 +1,7 @@
 # TASK-004 — Safety Policy (read-only)
 
+**Current status: NOT AUTHORIZED.** Do not implement this task without separate explicit approval. Acceptance of Quick Scan diagnostics, mitigation or [ADR-003](../docs/ADR-003-QUICK-SCAN-SAFETY.md) does not authorize it; user-facing TASK-003 scanning remains blocked. The scope below is planning input only.
+
 ## Objective
 Codify pure, deterministic policy and Windows identity interfaces so later cleanup cannot bypass review. No cleanup implementation.
 

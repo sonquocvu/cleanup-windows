@@ -1,5 +1,9 @@
 # CleanSpace — Product Requirements (MVP)
 
+## Current release decision
+
+TASK-001 and TASK-002 are **ACCEPTED**. The TASK-003 scanner is implemented, but user-facing Quick Scan remains **BLOCKED**; its production UI mitigation is accepted. Dashboard Quick Scan and Scan Results Start stay disabled with a temporary-unavailability notice. Drive Overview, navigation and themes remain available; Cleanup remains disabled. TASK-004 and TASK-005 are **NOT AUTHORIZED**. See [ADR-003](ADR-003-QUICK-SCAN-SAFETY.md) for the accepted decision and re-enablement gates, and the [roadmap](ROADMAP.md) for task status. Scanning/candidate capabilities below describe product goals, not enabled features or authorization to implement them. Any relaxation of trusted scope requires explicit product/security approval before implementation.
+
 ## Vision
 A minimal Windows 10/11 native desktop application that **explains disk usage and identifies conservatively scoped, potentially unnecessary files**, with user control over any future cleanup.
 

@@ -1,0 +1,35 @@
+<UserControl
+    x:Class="CleanSpace.App.Views.ScanResultsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel Spacing="20">
+        <InfoBar IsOpen="True" IsClosable="False" Severity="Informational"
+                 Title="Metadata only"
+                 Message="Cleanup eligibility has NOT been evaluated. Logical file sizes are not recoverable disk space. No files are changed by this scan." />
+        <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="20">
+            <StackPanel Spacing="16">
+                <TextBlock Text="{x:Bind ViewModel.StatusText, Mode=OneWay}"
+                           Style="{ThemeResource SubtitleTextBlockStyle}" AutomationProperties.LiveSetting="Polite" />
+                <TextBlock Text="Scope: current-user Local AppData Temp on the Windows volume" TextWrapping="Wrap" />
+                <TextBlock Text="{x:Bind ViewModel.FilesText, Mode=OneWay}" TextWrapping="Wrap" />
+                <TextBlock Text="{x:Bind ViewModel.BytesText, Mode=OneWay}" TextWrapping="Wrap"
+                           ToolTipService.ToolTip="{x:Bind ViewModel.BytesExact, Mode=OneWay}" />
+                <TextBlock Text="{x:Bind ViewModel.SkippedText, Mode=OneWay}" TextWrapping="Wrap" />
+                <ProgressBar IsIndeterminate="{x:Bind ViewModel.IsScanning, Mode=OneWay}"
+                             Visibility="{x:Bind ViewModel.IsScanning, Mode=OneWay}"
+                             AutomationProperties.Name="Scanning metadata; total entry count unknown" />
+                <TextBlock Text="{x:Bind ViewModel.Summary, Mode=OneWay}" TextWrapping="Wrap"
+                           AutomationProperties.LiveSetting="Polite" />
+                <StackPanel Orientation="Horizontal" Spacing="12">
+                    <Button Content="Start Quick Scan" Command="{x:Bind ViewModel.StartCommand, Mode=OneWay}"
+                            AutomationProperties.Name="Start read-only Quick Scan" />
+                    <Button Content="Cancel" Command="{x:Bind ViewModel.CancelCommand, Mode=OneWay}"
+                            AutomationProperties.Name="Cancel Quick Scan" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <TextBlock Text="Counts describe this scan session, not a disk snapshot. Skipped directories count once; their contents are unknown. Repeated file identities are counted once, including observed hard links. Sparse and compressed files may use different physical storage."
+                   TextWrapping="Wrap" />
+    </StackPanel>
+</UserControl>

@@ -1,5 +1,7 @@
 # TASK-002 — Drive Overview (read-only)
 
+**Current status: ACCEPTED.** This specification is retained for reference; it does not authorize new work. See the [current roadmap](../docs/ROADMAP.md) and [ADR-003 feature freeze](../docs/ADR-003-QUICK-SCAN-SAFETY.md).
+
 ## Objective
 Detect the actual Windows system volume and show used/available/total disk space on Dashboard.
 

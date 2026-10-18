@@ -1,5 +1,7 @@
 # TASK-001 — Windows Solution Foundation
 
+**Current status: ACCEPTED.** This specification is retained for reference; it does not authorize new work. See the [current roadmap](../docs/ROADMAP.md) and [ADR-003 feature freeze](../docs/ADR-003-QUICK-SCAN-SAFETY.md).
+
 ## Objective
 Build a native WinUI 3 solution skeleton for CleanSpace. Do not implement file scanning or cleanup.
 

@@ -27,6 +27,9 @@ Prevent CleanSpace from deleting system files, deleting unexpected user data, el
 | Recursion, infinite loop, RAM pressure | Bounded enumeration, no following links, cancellation, incremental processing | Deep/wide directory fixtures |
 
 ## Trusted scan scope for v0.1
+
+**Current Safety Gate:** user-facing TASK-003 scanning remains **BLOCKED** under the accepted [ADR-003](ADR-003-QUICK-SCAN-SAFETY.md). Retain the approved UI disablement and preserve scanner code/tests. Passing functional/diagnostic tests does not approve any evaluated scanning strategy. The scope rules below remain requirements for a separately approved design; do not relax them to resolve sharing conflicts. Any scope-model relaxation requires explicit product/security approval **before implementation**. No new prototype, re-enablement, TASK-004 or TASK-005 work is authorized by this decision.
+
 - A specific verified current-user Local AppData Temp path on the OS volume. Resolve using Windows known-folder/environment APIs with strict validation; missing/redirected/unexpected locations fail closed.
 - Do not treat all of `%TEMP%`, any user-entered root, or `C:\\` as inherently safe.
 - An entry is not necessarily safe just because its path is beneath the scoped root, or because it is older than 7 days. Age is only a conservative filter.

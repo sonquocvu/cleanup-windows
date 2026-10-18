@@ -65,6 +65,9 @@ CleanSpace.App ──> CleanSpace.Application ──> CleanSpace.Core
 `CleanupPlan`: user selections plus short expiry; generated and reviewed independently from scan results.
 
 ## Scan flow
+
+**Current architecture decision:** [ADR-003](ADR-003-QUICK-SCAN-SAFETY.md) retains the accepted production UI mitigation. The TASK-003 scanner and tests are preserved, but user-facing scanning is **BLOCKED**. Production DI explicitly passes `scanAvailable: false`; both scan command paths guard execution, and navigation alone does not dispatch a scan. There is no user-facing enabling switch. The flow below describes intended scanning behavior, not an active approved feature. No long-lived restrictive, short-lease or fully shared strategy is approved for user-facing operation. Re-enablement requires a separately approved safe design and the ADR's evidence gates; trusted-scope relaxation requires explicit product/security approval before implementation. TASK-004 and TASK-005 remain **NOT AUTHORIZED**.
+
 `Dashboard -> QuickScanUseCase -> ScanScopeProvider -> Enumerate -> CandidatePolicy -> batched progress + ScanResultsViewModel`.
 
 Only an approved user-scoped Temp directory is in v0.1 scope. Do not enumerate entire system drive. Validate the scope root and every entry; reject symlinks, mount points, junctions, special reparse points, off-volume entries and cloud placeholders. Skip inaccessible nodes and log counts. No automatic permission changes. Scan only metadata, not contents. Limit UI notifications (e.g. batch every 100 records or 100–250ms), but choose actual values after measurement. Stop on cancellation and keep partial results clearly labeled.

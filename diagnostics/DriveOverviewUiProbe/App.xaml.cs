@@ -20,7 +20,9 @@ public partial class App : Microsoft.UI.Xaml.Application
     {
         var settings = new SettingsViewModel(new(new MemoryThemeStore()));
         dashboard = new DashboardViewModel(new(new ScenarioProvider()));
-        window = new MainWindow(new(settings, dashboard)) { Title = "CleanSpace — Drive UI probe (fake data)" };
+        var scan = new ScanResultsViewModel(new(new UnavailableScanScope()));
+        window = new MainWindow(new(settings, dashboard, scan)) { Title = "CleanSpace — Drive UI probe (fake data)" };
+        window.Closed += (_, _) => scan.Dispose();
         window.Closed += (_, _) => dashboard.Dispose();
         window.Activate();
         await Task.WhenAll(settings.InitializeAsync(), dashboard.InitializeAsync());
@@ -40,6 +42,11 @@ public partial class App : Microsoft.UI.Xaml.Application
                     1024L * 1024 * 1024 * 10, "NTFS", DateTimeOffset.UtcNow)
                 : new(@"Q:\", null, null, null, null, DateTimeOffset.UtcNow);
         }
+    }
+
+    private sealed class UnavailableScanScope : IScanScopeProvider
+    {
+        public IScanScopeLease Open(CancellationToken cancellationToken) => throw new IOException("Scan unavailable in drive probe.");
     }
 
     private sealed class MemoryThemeStore : IThemeSettingsStore

@@ -1,5 +1,7 @@
 # TASK-005 — Recycle Mechanism Security Spike (NOT production cleanup)
 
+**Current status: NOT AUTHORIZED.** Do not begin research or experiments under this task without separate explicit approval. Its prerequisites below remain unsatisfied. Acceptance of Quick Scan diagnostics, mitigation or [ADR-003](../docs/ADR-003-QUICK-SCAN-SAFETY.md) does not authorize TASK-004, TASK-005 or cleanup. The remainder is planning input only.
+
 ## Gating
 Only begin after Tasks 001-004 approved. Must remain separate from shipping code; request permission before any **destructive** sandbox experiment.
 

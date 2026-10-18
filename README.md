@@ -2,7 +2,9 @@
 
 CleanSpace is a safety-first Windows desktop app for disk space analysis and carefully gated cleanup.
 
-**Status:** TASK-001 remains conditionally passed and not fully accepted. The Windows solution builds with zero warnings/errors and all 39 tests pass, including 19 JSON adapter integration cases. Repeated actual-executable launches still crash while initializing WinUI control resources. See [TASK-001 runtime evidence and changed files](docs/TASK-001-REPORT.md).
+**Current status:** TASK-001 and TASK-002 are **ACCEPTED**. TASK-003's scanner is implemented, but user-facing scanning remains **BLOCKED**; its production UI mitigation is accepted. Quick Scan stays disabled. TASK-004 and TASK-005 are **NOT AUTHORIZED**. The accepted [ADR-003 safety decision](docs/ADR-003-QUICK-SCAN-SAFETY.md) records why and the separate approvals required before re-enablement; see the [roadmap](docs/ROADMAP.md) for current task status.
+
+The latest [REWORK-02 evidence](docs/TASK-003-REWORK-02-REPORT.md) records a clean build, 169 passing tests, three production startup smoke tests and real WinUI disablement/navigation/theme checks. These are existing results, not a new verification run or approval of production scanning. The earlier startup failure was resolved in [TASK-001-FIX-06](docs/TASK-001-FIX-06-REPORT.md); historical reports remain unchanged.
 
 ## Build and test on Windows
 
@@ -19,7 +21,7 @@ dotnet test CleanSpace.slnx --no-build --no-restore --verbosity normal -m:1
 git diff --check
 ```
 
-Use a normal, non-administrator Windows terminal. The Codex process/network sandbox prevented NuGet feed access and test-host communication; the authorized restore and tests succeeded outside that sandbox. This does not require an elevated application or UAC. A forced restore with fresh HTTP data, `NuGetAudit=true`, and `NuGetAuditMode=all` cleared the previous NU1900 connectivity warnings. The current direct/transitive vulnerability query reported no vulnerable packages; audit checks were not disabled.
+Use a normal, non-administrator Windows terminal. Earlier verification encountered sandbox restrictions on NuGet feed access and test-host communication; authorized restore/tests succeeded outside that sandbox without Administrator/UAC elevation. Historical audit commands and results are recorded in the task reports. This documentation-only decision does not rerun auditing, builds or tests.
 
 The development application is unpackaged and carries the Windows App SDK runtime beside its executable. It still uses the installed .NET 10 runtime. No runtime installer, MSIX installation, signing, publication, or Windows configuration change is part of TASK-001. The launch command is:
 
@@ -27,9 +29,9 @@ The development application is unpackaged and carries the Windows App SDK runtim
 & './src/CleanSpace.App/bin/Debug/net10.0-windows10.0.19041.0/win-x64/CleanSpace.App.exe'
 ```
 
-Current launch fails before displaying a window; do not interpret a successful build as proof that the window opens. A [minimal diagnostic probe](diagnostics/WinUiStartupProbe/README.md) opens without control resources and reproduces the native crash when `XamlControlsResources` is added. No runtime/deployment workaround or SDK upgrade has been applied without supporting evidence. When startup is resolved, check Dashboard and Scan Results navigation, disabled Cleanup and Quick Scan controls, and Settings. Choose System, Light, or Dark and press **Apply theme**, close the application, and reopen it to check persistence. Check keyboard navigation and a narrow window separately. These GUI checks remain NOT VERIFIED.
+The accepted mitigation retains Drive Overview, Dashboard/Scan Results/Settings navigation and themes. Dashboard Quick Scan and Scan Results Start remain disabled with a temporary-unavailability notice; Cleanup remains disabled. Existing production runtime evidence is in REWORK-02. A successful build or startup alone does not approve scanning. New scanner designs, native experiments and re-enablement require separate authorization under ADR-003; do not run the production scanner against user Temp as part of this feature freeze.
 
-The only intended application data write is its own appearance preference at `%LOCALAPPDATA%/CleanSpace/settings.json`. First launch defaults to System. Missing settings are normal; malformed or unreadable settings fall back to System with a path-free notice. A failed save keeps the previously active theme. No disk enumeration, drive metrics, scan service, cleanup interface, or cleanup adapter has been implemented.
+The only intended application data write is its own appearance preference at `%LOCALAPPDATA%/CleanSpace/settings.json`. First launch defaults to System. Missing settings are normal; malformed or unreadable settings fall back to System with a path-free notice. A failed save keeps the previously active theme. Drive Overview reads Windows-volume metadata. The scanner implementation and tests are retained for review, with user-facing entry points disabled. No cleanup implementation is authorized.
 
 Integration fixtures are uniquely named beneath `tests/CleanSpace.IntegrationTests/bin/Debug/net10.0/fixtures/theme-settings/`. They never use real user settings or Temp, make no permission changes, and are retained without deletion. The adapter's internal directory-injection constructor exists only for isolated testing; normal application DI continues to use the same public, fixed-location constructor.
 
@@ -39,7 +41,7 @@ Integration fixtures are uniquely named beneath `tests/CleanSpace.IntegrationTes
 - Architect (ChatGPT): owns requirements, architecture, safety constraints, task specs and technical review.
 - Codex: implements one approved task at a time, reports exact changes and observed build/test results.
 
-## Repository preparation
+## Initial repository preparation (historical)
 
 1. Create an empty Git repository named `CleanSpace` on your Windows PC.
 2. Copy **this folder's contents** to its root (`AGENTS.md` must be at repo root).
@@ -48,7 +50,7 @@ Integration fixtures are uniquely named beneath `tests/CleanSpace.IntegrationTes
 5. Review diffs and test output. Approve one task before opening the next.
 6. Do not enable any cleanup operations until the separate security gate is approved.
 
-## First Codex message
+## Initial TASK-001 prompt (historical)
 
 > Read `AGENTS.md`, `docs/PRODUCT.md`, `docs/ARCHITECTURE.md`, `docs/SECURITY.md`, and `tasks/001-foundation.md`. Implement **only Task 001**. First inspect the Windows development environment. Follow the task scope exactly. Do not implement scanning, delete/move/recycle functions or privilege elevation. Run the actual build/tests supported by this machine and report exact commands/results. If a toolchain prerequisite is missing, explain it and stop instead of claiming success. Do not start Task 002 or commit/push without approval.
 
@@ -70,6 +72,7 @@ If instructions conflict, **do not implement** the unsafe or contradictory step.
 - `docs/ARCHITECTURE.md` — project topology, contracts and flows.
 - `docs/SECURITY.md` — threat model, cleanup invariants, release gates.
 - `docs/ROADMAP.md` — milestones, dependencies and definition of done.
+- `docs/ADR-003-QUICK-SCAN-SAFETY.md` — accepted Quick Scan disablement, evaluated strategies and separate re-enablement approvals.
 - `tasks/001-foundation.md` — initial implementation task.
 - `tasks/002-drive-overview.md` — system drive overview.
 - `tasks/003-quick-scan.md` — allowlisted read-only scanner.
