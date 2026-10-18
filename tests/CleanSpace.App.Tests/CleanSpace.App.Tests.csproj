@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" PrivateAssets="all" />
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+    <ProjectReference Include="../../src/CleanSpace.Application/CleanSpace.Application.csproj" />
+    <!-- Compile the actual UI-independent presentation sources without loading WinUI in unit tests. -->
+    <Compile Include="../../src/CleanSpace.App/ViewModels/DashboardViewModel.cs" Link="Presentation/DashboardViewModel.cs" />
+    <Compile Include="../../src/CleanSpace.App/Formatting/DriveValueFormatter.cs" Link="Presentation/DriveValueFormatter.cs" />
+  </ItemGroup>
+</Project>

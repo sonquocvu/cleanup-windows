@@ -6,6 +6,7 @@
     <Project Path="src/CleanSpace.Infrastructure/CleanSpace.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/CleanSpace.App.Tests/CleanSpace.App.Tests.csproj" />
     <Project Path="tests/CleanSpace.Application.Tests/CleanSpace.Application.Tests.csproj" />
     <Project Path="tests/CleanSpace.Core.Tests/CleanSpace.Core.Tests.csproj" />
     <Project Path="tests/CleanSpace.IntegrationTests/CleanSpace.IntegrationTests.csproj" />

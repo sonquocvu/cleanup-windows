@@ -9,9 +9,10 @@ public enum ShellPage
     Settings
 }
 
-public partial class MainViewModel(SettingsViewModel settings) : ObservableObject
+public partial class MainViewModel(SettingsViewModel settings, DashboardViewModel dashboard) : ObservableObject
 {
     public SettingsViewModel Settings { get; } = settings;
+    public DashboardViewModel Dashboard { get; } = dashboard;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(PageTitle))]
@@ -23,7 +24,7 @@ public partial class MainViewModel(SettingsViewModel settings) : ObservableObjec
 
     public bool IsDashboard => SelectedPage == ShellPage.Dashboard;
     public bool IsSettings => SelectedPage == ShellPage.Settings;
-    public bool IsPlaceholder => !IsSettings;
+    public bool IsPlaceholder => SelectedPage == ShellPage.ScanResults;
 
     public string PageTitle => SelectedPage switch
     {
@@ -36,6 +37,6 @@ public partial class MainViewModel(SettingsViewModel settings) : ObservableObjec
     {
         ShellPage.ScanResults => "No scan results yet. Scanning is unavailable in this foundation release.",
         ShellPage.Settings => "Choose how CleanSpace looks on this device.",
-        _ => "Drive information and scanning will become available in separately approved tasks."
+        _ => "A read-only overview of the volume containing Windows."
     };
 }

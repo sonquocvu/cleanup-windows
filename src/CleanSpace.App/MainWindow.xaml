@@ -22,19 +22,19 @@
                         <TextBlock Text="{x:Bind ViewModel.PageDescription, Mode=OneWay}" TextWrapping="Wrap" />
                     </StackPanel>
                     <InfoBar IsOpen="True" IsClosable="False" Severity="Informational"
-                             Title="Read-only foundation"
+                             Title="Read-only overview"
                              Message="Scanning and cleanup are unavailable. CleanSpace has not analyzed or changed your files." />
+                    <views:DashboardView ViewModel="{x:Bind ViewModel.Dashboard}"
+                                         Visibility="{x:Bind ViewModel.IsDashboard, Mode=OneWay}" />
                     <Border Visibility="{x:Bind ViewModel.IsPlaceholder, Mode=OneWay}"
                             Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1"
                             CornerRadius="8" Padding="24">
                         <StackPanel Spacing="16">
-                            <TextBlock Text="Ready for the next approved step" TextWrapping="Wrap"
+                            <TextBlock Text="No scan results yet" TextWrapping="Wrap"
                                        Style="{ThemeResource SubtitleTextBlockStyle}" />
-                            <TextBlock Text="There are no disk statistics, candidate estimates, or scan results in this release."
+                            <TextBlock Text="No junk-file analysis has been performed. Scanning is unavailable in this release."
                                        TextWrapping="Wrap" />
-                            <Button Content="Quick Scan (unavailable)" IsEnabled="False"
-                                    Visibility="{x:Bind ViewModel.IsDashboard, Mode=OneWay}" />
                         </StackPanel>
                     </Border>
                     <views:SettingsView ViewModel="{x:Bind ViewModel.Settings}"
