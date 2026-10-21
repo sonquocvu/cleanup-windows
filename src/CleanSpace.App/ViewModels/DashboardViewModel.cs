@@ -27,6 +27,10 @@ public partial class DashboardViewModel(DriveOverviewUseCase useCase) : Observab
     [NotifyPropertyChangedFor(nameof(UsedExact))]
     [NotifyPropertyChangedFor(nameof(FreeExact))]
     [NotifyPropertyChangedFor(nameof(AvailableExact))]
+    [NotifyPropertyChangedFor(nameof(TotalAccessible))]
+    [NotifyPropertyChangedFor(nameof(UsedAccessible))]
+    [NotifyPropertyChangedFor(nameof(FreeAccessible))]
+    [NotifyPropertyChangedFor(nameof(AvailableAccessible))]
     [NotifyPropertyChangedFor(nameof(Percentage))]
     [NotifyPropertyChangedFor(nameof(UsageValue))]
     [NotifyPropertyChangedFor(nameof(HasUsage))]
@@ -52,6 +56,10 @@ public partial class DashboardViewModel(DriveOverviewUseCase useCase) : Observab
     public string UsedExact => DriveValueFormatter.ExactBytes(Overview?.UsedBytes);
     public string FreeExact => DriveValueFormatter.ExactBytes(Overview?.TotalFreeBytes);
     public string AvailableExact => DriveValueFormatter.ExactBytes(Overview?.AvailableToUserBytes);
+    public string TotalAccessible => "Total capacity: " + TotalExact;
+    public string UsedAccessible => "Used space: " + UsedExact;
+    public string FreeAccessible => "Free space (volume): " + FreeExact;
+    public string AvailableAccessible => "Available to you: " + AvailableExact;
     public string Percentage => DriveValueFormatter.Percentage(Overview?.PercentageUsed);
     public string AvailabilityNotice => Overview?.AvailableToUserBytes is { } available
         && Overview.TotalFreeBytes is { } free && available < free

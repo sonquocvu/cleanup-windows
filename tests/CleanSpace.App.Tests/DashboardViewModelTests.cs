@@ -98,6 +98,63 @@ public sealed class DashboardViewModelTests
         Assert.True(provider.LastToken.IsCancellationRequested);
     }
 
+    [Fact]
+    public async Task AccessibleMetricsUpdateAndClearWhenInvalidDataReplacesSnapshot()
+    {
+        var provider = new FakeProvider();
+        using var viewModel = new DashboardViewModel(new(provider));
+        var changed = new HashSet<string?>();
+        viewModel.PropertyChanged += (_, args) => changed.Add(args.PropertyName);
+        var loading = viewModel.InitializeAsync();
+        provider.Complete(100, 25, 10);
+        await loading;
+        Assert.Equal("Total capacity: 100 bytes", viewModel.TotalAccessible);
+        Assert.Equal("Used space: 75 bytes", viewModel.UsedAccessible);
+        Assert.Equal("Free space (volume): 25 bytes", viewModel.FreeAccessible);
+        Assert.Equal("Available to you: 10 bytes", viewModel.AvailableAccessible);
+        Assert.Contains(nameof(viewModel.TotalAccessible), changed);
+        Assert.Contains(nameof(viewModel.UsedAccessible), changed);
+        Assert.Contains(nameof(viewModel.FreeAccessible), changed);
+        Assert.Contains(nameof(viewModel.AvailableAccessible), changed);
+
+        var refresh = viewModel.RefreshCommand.ExecuteAsync(null);
+        Assert.Equal("Total capacity: Unavailable", viewModel.TotalAccessible);
+        Assert.Equal("Used space: Unavailable", viewModel.UsedAccessible);
+        Assert.Equal("Free space (volume): Unavailable", viewModel.FreeAccessible);
+        Assert.Equal("Available to you: Unavailable", viewModel.AvailableAccessible);
+        provider.Complete(100, 101, 0);
+        await refresh;
+        Assert.True(viewModel.HasError);
+        Assert.Null(viewModel.Overview);
+        Assert.False(viewModel.HasUsage);
+        Assert.Equal("Total capacity: Unavailable", viewModel.TotalAccessible);
+
+        var recovery = viewModel.RefreshCommand.ExecuteAsync(null);
+        provider.Complete(0, 0, 0);
+        await recovery;
+        Assert.False(viewModel.HasError);
+        Assert.Equal("Total capacity: 0 bytes", viewModel.TotalAccessible);
+        Assert.Equal("Used space: 0 bytes", viewModel.UsedAccessible);
+        Assert.Equal("Free space (volume): 0 bytes", viewModel.FreeAccessible);
+        Assert.Equal("Available to you: 0 bytes", viewModel.AvailableAccessible);
+        Assert.False(viewModel.HasUsage);
+    }
+
+    [Theory]
+    [InlineData(100L, 0d)]
+    [InlineData(0L, 100d)]
+    public async Task PositiveCapacityKeepsValidEmptyAndFullUsageBars(long free, double percentage)
+    {
+        var provider = new FakeProvider();
+        using var viewModel = new DashboardViewModel(new(provider));
+        var loading = viewModel.InitializeAsync();
+        provider.Complete(100, free, free);
+        await loading;
+        Assert.True(viewModel.HasUsage);
+        Assert.Equal(percentage, viewModel.UsageValue);
+        Assert.False(viewModel.HasError);
+    }
+
     private sealed class FakeProvider : IDriveInfoProvider
     {
         private TaskCompletionSource<DriveInfoSnapshot> pending = new(TaskCreationOptions.RunContinuationsAsynchronously);

@@ -37,10 +37,16 @@ public partial class App : Microsoft.UI.Xaml.Application
             // Initial request and each Refresh remain pending for inspection; navigation must still work.
             await Task.Delay(TimeSpan.FromSeconds(12), cancellationToken);
             if (call == 1) { throw new IOException(@"private-path\must-never-be-shown"); }
-            return call == 2
-                ? new(@"Q:\", 1024L * 1024 * 1024 * 100, 1024L * 1024 * 1024 * 25,
-                    1024L * 1024 * 1024 * 10, "NTFS", DateTimeOffset.UtcNow)
-                : new(@"Q:\", null, null, null, null, DateTimeOffset.UtcNow);
+            return call switch
+            {
+                2 => new(@"Q:\", 1024L * 1024 * 1024 * 100, 1024L * 1024 * 1024 * 25,
+                    1024L * 1024 * 1024 * 10, "NTFS", DateTimeOffset.UtcNow),
+                3 => new(@"Q:\", null, null, null, null, DateTimeOffset.UtcNow),
+                4 => new(@"Q:\", 0, 0, 0, "NTFS", DateTimeOffset.UtcNow),
+                5 => new(@"Q:\", 100, 101, 0, "NTFS", DateTimeOffset.UtcNow),
+                6 => new(@"Q:\", 100, 100, 100, "NTFS", DateTimeOffset.UtcNow),
+                _ => new(@"Q:\", 100, 0, 0, "NTFS", DateTimeOffset.UtcNow)
+            };
         }
     }
 
